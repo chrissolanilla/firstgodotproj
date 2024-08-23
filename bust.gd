@@ -7,9 +7,11 @@ const JUMP_VELOCITY = 4.5
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
+
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	
+
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -26,3 +28,6 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+	#add smooth camera, lower number is slower speed. 
+	$Camera_Controller.position = lerp($Camera_Controller.position, position, 0.1)
