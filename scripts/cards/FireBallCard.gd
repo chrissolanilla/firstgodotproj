@@ -4,7 +4,7 @@ var FireBallProjectile = preload("res://Scenes/Fireball.tscn")
 var remainingCastTime: float
 func _ready() -> void:
 	element = "Fire"
-	castTime = 2.0
+	castTime = 0.0
 	rarity = "Common"
 	remainingCastTime= castTime
 
@@ -35,15 +35,12 @@ func spawnFireball() -> void:
 	else:
 		print("camera found")
 	var direction = -camera.global_transform.basis.z.normalized()  # Get the forward direction of the camera
-	
 	# First, add the fireball to the scene
 	get_tree().root.add_child(fireball)
-
 	# Set the fireball's position slightly in front of the player
 	fireball.position = global_position + direction * 2.0  # Use position instead of transform
 	fireball.direction = direction
 	# Align the fireball to face the correct direction
 	fireball.look_at(fireball.position + direction)
-
 	# Set the fireball speed or any other properties
-	fireball.speed = 100
+	fireball.speed = 30
