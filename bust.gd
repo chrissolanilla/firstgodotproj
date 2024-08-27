@@ -15,14 +15,6 @@ func _ready():
 	# Lock mouse to screen
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-	# Create an instance of the fireball card scene
-	if fireballCardScene:
-		fireballCard = fireballCardScene.instantiate()
-		add_child(fireballCard)
-	else:
-		print("failed to load fireball")
-
-	
 func _input(event: InputEvent) -> void:
 	# Capture the mouse movement to rotate the camera
 	if event is InputEventMouseMotion:
@@ -42,7 +34,11 @@ func _physics_process(delta: float) -> void:
 	# Handle jump and trigger Fireball card
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		fireballCard.cardStart()  # Trigger the fireball card when jumping
+		# Instantiate and add the fireball card only when space (jump) is pressed
+		if fireballCardScene:
+			fireballCard = fireballCardScene.instantiate()
+			add_child(fireballCard)  # Now it will only be added when you press space
+			fireballCard.cardStart()
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
