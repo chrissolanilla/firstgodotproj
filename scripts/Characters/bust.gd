@@ -1,18 +1,19 @@
-extends CharacterBody3D
+extends BaseCharacter
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+
 const MOUSE_SENSITIVITY = 0.1
 
 var camera_rotation = Vector2.ZERO
 
 # Preload the FireballCard scene (this should be a PackedScene)
-var fireballCardScene = preload("res://Scenes/FireballCard.tscn")
+var fireballCardScene = preload("res://Scenes/Cards/FireballCard.tscn")
 
 var fireballCard
 
 func _ready():
 	# Lock mouse to screen
+	SPEED = 5.0
+	JUMP_VELOCITY = 4.5
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 func _input(event: InputEvent) -> void:

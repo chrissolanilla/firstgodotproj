@@ -1,6 +1,6 @@
 extends BaseCard
 
-var FireBallProjectile = preload("res://Scenes/Fireball.tscn")
+var FireBallProjectile = preload("res://Scenes/Projectiles/Fireball.tscn")
 var remainingCastTime: float
 func _ready() -> void:
 	element = "Fire"
