@@ -1,7 +1,6 @@
 extends Node3D
 
 class_name BaseCard
-
 #i want to force my teammates to have to set this to something like water or fire
 var element: String
 var castTime: float
@@ -12,7 +11,7 @@ func cardStart() -> void:
 	assert(false, "The method 'cardStart' must be overridden in the derived class")
 	
 #func cardTick() -> void:
-	##placeholder tick 
+	#placeholder tick 
 	#assert(false, "The method 'cardTick' must be overridden in the derived class")
 
 func cardEnd() -> void:
