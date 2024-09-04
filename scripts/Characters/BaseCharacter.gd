@@ -1,19 +1,22 @@
-extends CharacterBody3D
-class_name BaseCharacter
-
+class_name BaseCharacter extends CharacterBody3D
 var SPEED:float
 var JUMP_VELOCITY:float
 #each character should have a deck of cards
 var deck_of_cards = []
 #each character should 
 var hand = []
+var selected:int = 1
+
+@onready var drawCardTimer = $DrawCardTimer
 
 #common methods shared by all characters
 func _ready() -> void:
 	#they should all have a deck of cards i guess
-	deck_of_cards = ["Fireball", "Shield", "Heal", "Fireball", "Fireball", "Fireball", "Fireball", "Fireball"]
+	deck_of_cards = ["Fireball","Fireball","Fireball","Fireball","Fireball","Fireball","Fireball", "Fireball", "Fireball", "Fireball", "Fireball", "Fireball"]
 	#at the start of each game, each character will draw 5 cards
 	draw_card(5)
+	#start the timer to draw cards every 10 seconds
+	drawCardTimer.start()
 	pass
 
 #func take_damage(amount) -> void:
@@ -47,3 +50,11 @@ func discard_card(card):
 		# we could also add it to the graveyard potentially
 		hand.erase(card)
 		print("discarded card: %s" % card)
+
+#maybe have the code here to draw cards every delta 10 seconds		
+#func _process(delta: float) -> void:
+	#pass
+
+
+func _on_draw_card_timer_timeout() -> void:
+	draw_card(1)

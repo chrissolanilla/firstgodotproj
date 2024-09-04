@@ -1,6 +1,4 @@
-extends RigidBody3D
-
-class_name BaseProjectile
+class_name BaseProjectile extends RigidBody3D
 
 var lifeTime: float = 5.0
 var speed: float = 30.0

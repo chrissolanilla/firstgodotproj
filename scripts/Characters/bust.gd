@@ -1,9 +1,10 @@
 extends BaseCharacter
 
 const MOUSE_SENSITIVITY = 0.002
+const MAX_HOTBAR_SLOTS = 7
+var empty_icon = load("res://icon.svg")
 
-var camera_rotation = Vector2.ZERO
-var selected:int = 1
+#var selected:int = 1 base class has this variable already
 
 @onready var hotbar = $Hotbar
 @onready var camera3D = $Camera3D
@@ -14,11 +15,64 @@ var fireballCardScene = preload("res://Scenes/Cards/FireballCard.tscn")
 
 var fireballCard
 
+func initialize_hotbar() -> void:
+	hotbar.clear()
+	for i in range(MAX_HOTBAR_SLOTS):
+		hotbar.add_item("") #adds empty item
+		hotbar.set_item_icon(i, empty_icon)
+
 func _ready():
+	super._ready()
 	# Lock mouse to screen
 	SPEED = 5.0
 	JUMP_VELOCITY = 4.5
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	initialize_hotbar()#cause im lazy
+	draw_card(5)
+	drawCardTimer.start()
+
+func update_hotbar() -> void:
+	for i in range(MAX_HOTBAR_SLOTS):
+		var slot_number_text = str(i+1) #makes thign numeberd 1-7
+		if i< hand.size():
+			#add an icon to the hotbar
+			hotbar.set_item_icon(i, load("res://assets/fireball52x63.png"))
+			hotbar.set_item_text(i,slot_number_text)
+		else:
+			hotbar.set_item_icon(i,empty_icon)
+		
+			
+
+func draw_card(amount:int)-> void:
+	for i in range(amount):
+		if hand.size() < 7:
+			var card = deck_of_cards.pop_back()
+			hand.append(card)
+			update_hotbar() #update the hotbar with our card
+		else:
+			#discard if we have mroe than 7 cards
+			hand.pop_front()
+			var card = deck_of_cards.pop_back()
+			hand.append(card)
+			update_hotbar()
+		#print("Hand after darawing is: %s" % hand)
+		
+func play_card(card):
+	if card in hand:
+		hand.erase(card)
+		update_hotbar()
+		print("played card: %s" % card)
+		#actually play the card
+		if card == "Fireball":
+			cast_fireball()
+	else: 
+		print("Card not in hand: %s" % card)
+
+func cast_fireball():
+	if fireballCardScene:
+		fireballCard = fireballCardScene.instantiate()
+		add_child(fireballCard)
+		fireballCard.cardStart()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -50,11 +104,9 @@ func _physics_process(delta: float) -> void:
 	#handle mouse clicks
 	if Input.is_action_just_pressed("left_click"):
 		#activate the card selected in hotbar
-		# Instantiate and add the fireball card only when space (jump) is pressed
-		if fireballCardScene:
-			fireballCard = fireballCardScene.instantiate()
-			add_child(fireballCard)  # Now it will only be added when you press space
-			fireballCard.cardStart()
+		# Use the selected card in the hotbar
+		if selected < hand.size():
+			play_card(hand[selected])
 
 	#handle the right click? idk what to put in here, maybe a block or some weird attack
 	#if Input.is_action_just_pressed("right_click"):
