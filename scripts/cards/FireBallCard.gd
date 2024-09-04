@@ -29,7 +29,7 @@ func cardEnd() -> void:
 
 func spawnFireball() -> void:
 	var fireball = FireBallProjectile.instantiate()  # Instantiate the fireball projectile
-	var camera = get_parent().get_node("Camera_Controller/Camera_Target/Camera3D")
+	var camera = get_parent().get_node("Camera3D")
 	if camera == null:
 		print("Camera not found")
 	else:

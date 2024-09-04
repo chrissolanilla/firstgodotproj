@@ -16,9 +16,9 @@ func _ready() -> void:
 	draw_card(5)
 	pass
 
-func take_damage(amount) -> void:
-	#logic for taking damage
-	pass
+#func take_damage(amount) -> void:
+	##logic for taking damage
+	#pass
 
 func draw_card(amount:int) -> void:
 	#logic for drawing a card from the deck
