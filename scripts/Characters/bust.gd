@@ -31,12 +31,14 @@ func _ready():
 	draw_card(5)
 	drawCardTimer.start()
 
-func update_hotbar() -> void:
+func update_hotbar(iconPath: String) -> void:
 	for i in range(MAX_HOTBAR_SLOTS):
 		var slot_number_text = str(i+1) #makes thign numeberd 1-7
 		if i< hand.size():
 			#add an icon to the hotbar
-			hotbar.set_item_icon(i, load("res://assets/fireball52x63.png"))
+			#ideally we should load in the correct icon for what the card is named
+			#we should also set each slot its own icon, not all the slots the same icon
+			hotbar.set_item_icon(i, load(iconPath))
 			hotbar.set_item_text(i,slot_number_text)
 		else:
 			hotbar.set_item_icon(i,empty_icon)
@@ -48,21 +50,24 @@ func draw_card(amount:int)-> void:
 		if hand.size() < 7:
 			var card = deck_of_cards.pop_back()
 			hand.append(card)
-			update_hotbar() #update the hotbar with our card
+			update_hotbar("res://assets/fireball52x63.png") #update the hotbar with our card
 		else:
 			#discard if we have mroe than 7 cards
 			hand.pop_front()
 			var card = deck_of_cards.pop_back()
 			hand.append(card)
-			update_hotbar()
+			update_hotbar("res://assets/fireball52x63.png")
 		#print("Hand after darawing is: %s" % hand)
 		
+#this really hurts to override but we kind of need to so we can update the hotbar
 func play_card(card):
 	if card in hand:
 		hand.erase(card)
-		update_hotbar()
+		update_hotbar("res://assets/fireball52x63.png")
 		print("played card: %s" % card)
 		#actually play the card
+		#this is not good idea, we are not having a shit ton of if statements.
+		#cards should be objects and have a card.play() method
 		if card == "Fireball":
 			cast_fireball()
 	else: 

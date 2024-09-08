@@ -39,6 +39,7 @@ func draw_card(amount:int) -> void:
 
 func play_card(card):
 	if card in hand:
+		#card.play()
 		hand.erase(card)
 		#do the card's effect somehow
 		print("Played card: %s" % card)
