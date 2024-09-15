@@ -1,18 +1,23 @@
-extends Node3D
+extends Control
 
 class_name BaseCard
+
 #i want to force my teammates to have to set this to something like water or fire
+var cardName:String
 var element: String
 var castTime: float
 var rarity: String
 
+#constructor in godot?
+func init(cname:String, ele:String, ct:float, rarty:String) -> void:
+	cardName = cname
+	element = ele
+	castTime = ct
+	rarity = rarty
+
 func cardStart() -> void:
 	#placeholder Start/activation method
 	assert(false, "The method 'cardStart' must be overridden in the derived class")
-	
-#func cardTick() -> void:
-	#placeholder tick 
-	#assert(false, "The method 'cardTick' must be overridden in the derived class")
 
 func cardEnd() -> void:
 	#placeholder card end method
@@ -24,10 +29,17 @@ func getRarity() -> String:
 func getCastTime() -> float:
 	return castTime
 
+func setName() -> void :
+	cardName = get_name()
+
+func getName() -> String :
+	return cardName
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-	
+	if cardName == "":
+		setName()
+
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 	#pass

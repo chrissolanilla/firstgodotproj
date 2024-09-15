@@ -3,16 +3,22 @@ var SPEED:float
 var JUMP_VELOCITY:float
 #each character should have a deck of cards
 var deck_of_cards = []
-#each character should 
+#each character should
 var hand = []
 var selected:int = 1
 
 @onready var drawCardTimer = $DrawCardTimer
 
+func get_deck() -> Array:
+	return self.deck_of_cards
+
+func set_deck(deck:Array) -> void:
+	self.deck_of_cards = deck
+
 #common methods shared by all characters
 func _ready() -> void:
 	#they should all have a deck of cards i guess
-	deck_of_cards = ["Fireball","Fireball","Fireball","Fireball","Fireball","Fireball","Fireball", "Fireball", "Fireball", "Fireball", "Fireball", "Fireball"]
+	# deck_of_cards = ["Fireball","Fireball","Fireball","Fireball","Fireball","Fireball","Fireball", "Fireball", "Fireball", "Fireball", "Fireball", "Fireball"]
 	#at the start of each game, each character will draw 5 cards
 	draw_card(5)
 	#start the timer to draw cards every 10 seconds
@@ -45,14 +51,14 @@ func play_card(card):
 		print("Played card: %s" % card)
 	else:
 		print("Card not in hand: %s" % card)
-		
+
 func discard_card(card):
 	if card in hand:
 		# we could also add it to the graveyard potentially
 		hand.erase(card)
 		print("discarded card: %s" % card)
 
-#maybe have the code here to draw cards every delta 10 seconds		
+#maybe have the code here to draw cards every delta 10 seconds
 #func _process(delta: float) -> void:
 	#pass
 

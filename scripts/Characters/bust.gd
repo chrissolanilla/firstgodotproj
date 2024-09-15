@@ -9,9 +9,11 @@ var empty_icon = load("res://icon.svg")
 @onready var hotbar = $Hotbar
 @onready var camera3D = $Camera3D
 @onready var rayCast = $Camera3D/RayCast3D
+var exportedDeck = DeckManager.get_deck()
+#how do i load a deck from something that a player chooses in an interface?
 
 # Preload the FireballCard scene (this should be a PackedScene)
-var fireballCardScene = preload("res://Scenes/Cards/FireballCard.tscn")
+var fireballCardScene = load("res://Scenes/Cards/FireballCard.tscn")
 
 var fireballCard
 
@@ -22,15 +24,16 @@ func initialize_hotbar() -> void:
 		hotbar.set_item_icon(i, empty_icon)
 
 func _ready():
+	set_deck(exportedDeck)
 	super._ready()
 	# Lock mouse to screen
 	SPEED = 5.0
 	JUMP_VELOCITY = 4.5
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	initialize_hotbar()#cause im lazy
-	draw_card(5)
 	drawCardTimer.start()
 
+#we should reall pass in the hand which should have a list of card objects and their icons and functions
 func update_hotbar(iconPath: String) -> void:
 	for i in range(MAX_HOTBAR_SLOTS):
 		var slot_number_text = str(i+1) #makes thign numeberd 1-7
@@ -42,8 +45,8 @@ func update_hotbar(iconPath: String) -> void:
 			hotbar.set_item_text(i,slot_number_text)
 		else:
 			hotbar.set_item_icon(i,empty_icon)
-		
-			
+
+
 
 func draw_card(amount:int)-> void:
 	for i in range(amount):
@@ -53,12 +56,13 @@ func draw_card(amount:int)-> void:
 			update_hotbar("res://assets/fireball52x63.png") #update the hotbar with our card
 		else:
 			#discard if we have mroe than 7 cards
+			print("discarding a card")
 			hand.pop_front()
 			var card = deck_of_cards.pop_back()
 			hand.append(card)
 			update_hotbar("res://assets/fireball52x63.png")
 		#print("Hand after darawing is: %s" % hand)
-		
+
 #this really hurts to override but we kind of need to so we can update the hotbar
 func play_card(card):
 	if card in hand:
@@ -70,7 +74,7 @@ func play_card(card):
 		#cards should be objects and have a card.play() method
 		if card == "Fireball":
 			cast_fireball()
-	else: 
+	else:
 		print("Card not in hand: %s" % card)
 
 func cast_fireball():
@@ -85,7 +89,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		#stop us from flying when looking up
 		camera3D.rotation.x = camera3D.rotation.x - (event.relative.y * MOUSE_SENSITIVITY)
 		#stop us from looking 360 up
-		camera3D.rotation.x = clamp(camera3D.rotation.x, deg_to_rad(-90), deg_to_rad(90) ) 
+		camera3D.rotation.x = clamp(camera3D.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
